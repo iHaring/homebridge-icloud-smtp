@@ -1,0 +1,67 @@
+{
+  "pluginAlias": "ICloudSMTP",
+  "pluginType": "platform",
+  "singular": false,
+  "headerDisplay": "Send emails via iCloud SMTP when switches are triggered",
+  "schema": {
+    "type": "object",
+    "required": [
+      "username",
+      "password"
+    ],
+    "properties": {
+      "username": {
+        "title": "Enter your iCloud email address to send the emails from.",
+		"type": "string",
+		"required": true,
+        "format": "email",
+		"description": "Use the same email address that is used to login on iCloud.com when you generate the app-specific password."
+      },
+      "password": {
+        "title": "app-specific password",
+		"type": "string",
+		"description": "Generate an app-specific password on account.apple.com. Select Generate an app-specific password, then follow the steps on your screen."
+      },
+      "debug": {
+        "type": "boolean",
+        "default": false
+      },
+      "switches": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": [
+            "name",
+            "to",
+            "subject",
+            "body"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string",
+              "format": "email"
+            },
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            },
+            "cooldown": {
+              "type": "number",
+              "default": 30
+            },
+            "retries": {
+              "type": "number",
+              "default": 2
+            }
+          }
+        }
+      }
+    }
+  }
+}
