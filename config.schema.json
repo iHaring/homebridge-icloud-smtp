@@ -20,11 +20,7 @@
       "password": {
         "title": "app-specific password",
 		"type": "string",
-		"description": "Generate an app-specific password on account.apple.com. Select Generate an app-specific password, then follow the steps on your screen."
-      },
-      "debug": {
-        "type": "boolean",
-        "default": false
+		"description": "Generate an app-specific password on account.apple.com."
       },
       "switches": {
         "type": "array",
@@ -34,8 +30,7 @@
           "required": [
             "name",
             "to",
-            "subject",
-            "body"
+            "subject"
           ],
           "properties": {
             "name": {
@@ -54,10 +49,6 @@
             "cooldown": {
               "type": "number",
               "default": 30
-            },
-            "retries": {
-              "type": "number",
-              "default": 2
             }
           }
         }
