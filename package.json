@@ -1,8 +1,8 @@
 {
-"name": "@iharing/homebridge-icloud-smtp",
+  "name": "@iharing/homebridge-icloud-smtp",
   "displayName": "iCloud SMTP Switches",
   "type": "commonjs",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Virtual Switches to be able to send emails from Homebrige.",
   "author": "liamharing",
   "license": "MIT",
@@ -15,25 +15,25 @@
     "url": "https://github.com/iHaring/homebridge-icloud-smtp/issues"
   },
   "keywords": [
-      "homebridge",
-      "homebridge-plugin",
-      "plugin",
-      "homebridge plugin",
-      "virtual",
-      "virtual accessory",
-      "virtual accessories",
-      "switch",
-      "virtual switch",
-      "delay",
-      "timer",
-      "dummy"
-    ],
+    "homebridge",
+    "homebridge-plugin",
+    "plugin",
+    "homebridge plugin",
+    "virtual",
+    "virtual accessory",
+    "virtual accessories",
+    "switch",
+    "virtual switch",
+    "delay",
+    "timer",
+    "dummy"
+  ],
   "main": "dist/index.js",
   "engines": {
     "node": "^22.10.0 || ^24.0.0",
     "homebridge": "^1.8.0 || ^2.0.0"
   },
   "dependencies": {
-	  "nodemailer": "^6.10.1"
-	}
+    "nodemailer": "^8.0.7"
+  }
 }
