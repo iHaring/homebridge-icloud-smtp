@@ -26,9 +26,7 @@ class MailSwitchAccessory {
       .onGet(() => false);
 
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.mail.me.com',
-      port: 587,
-      secure: false,
+      service: "iCloud",
       auth: {
         user: platformConfig.username,
         pass: platformConfig.password
