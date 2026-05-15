@@ -28,7 +28,15 @@
     "timer",
     "dummy"
   ],
-  "main": "dist/index.js",
+  "main": "./index.js",
+  "files": [
+    "index.js",
+    "platform.js",
+    "switchAccessory.js",
+    "config.schema.json",
+    "LICENSE",
+    "README.md"
+  ],
   "engines": {
     "node": "^22.10.0 || ^24.0.0",
     "homebridge": "^1.8.0 || ^2.0.0"
