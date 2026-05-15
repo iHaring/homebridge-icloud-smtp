@@ -1,5 +1,5 @@
-
 const nodemailer = require('nodemailer');
+const { version } = require('./package.json');
 
 class MailSwitchAccessory {
   constructor(log, api, accessory, swConfig, platformConfig, queue) {
@@ -16,10 +16,11 @@ class MailSwitchAccessory {
       accessory.addService(api.hap.Service.Switch, swConfig.name);
 
     accessory.getService(api.hap.Service.AccessoryInformation)
-      .setCharacteristic(api.hap.Characteristic.Manufacturer, 'Custom')
-      .setCharacteristic(api.hap.Characteristic.Model, 'iCloud SMTP Switch')
-      .setCharacteristic(api.hap.Characteristic.SerialNumber, swConfig.name);
-
+      .setCharacteristic(api.hap.Characteristic.Manufacturer, 'homebridge-icloud-smtp')
+      .setCharacteristic(api.hap.Characteristic.Model, swConfig.name)
+      .setCharacteristic(api.hap.Characteristic.SerialNumber, accessory.UUID)
+      .setCharacteristic(api.hap.Characteristic.FirmwareRevision, version);
+    
     this.service
       .getCharacteristic(api.hap.Characteristic.On)
       .onSet(this.setState.bind(this))
