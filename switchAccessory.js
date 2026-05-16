@@ -67,7 +67,6 @@ class MailSwitchAccessory {
 
   async sendMail() {
 
-    // AUTH GUARD (global platform state)
     if (this.isAuthFailed && this.isAuthFailed()) {
       this.log.error(
         this.logPrefix() +
@@ -78,16 +77,19 @@ class MailSwitchAccessory {
 
     try {
 
+      // ✅ Fallback TO = username if missing
+      const recipient = this.swConfig.to || this.platformConfig.username;
+
       const info = await this.transporter.sendMail({
         from: this.platformConfig.username,
-        to: this.swConfig.to,
+        to: recipient,
         subject: this.swConfig.subject,
         text: this.swConfig.body
       });
 
-      // ✅ SINGLE CLEAN LOG LINE
+      // ✅ Clean single log line
       this.log.info(
-        `${this.logPrefix()} email sent → ${this.swConfig.to}`
+        `${this.logPrefix()} email sent → ${recipient}`
       );
 
       if (this.platformConfig.debug) {
