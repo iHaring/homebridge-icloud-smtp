@@ -39,37 +39,15 @@ class ICloudSMTPPlatform {
     }
 
     // ----------------------------
-    // SHARED SMTP TRANSPORT
+    // SHARED ICLOUD SMTP TRANSPORT
     // ----------------------------
     this.smtpAuthFailed = false;
 
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.mail.me.com',
-      port: 587,
-      secure: false,
+      service: 'icloud',
       auth: {
         user: this.config.username,
         pass: this.config.password
-      }
-    });
-
-    this.transporter.verify((error) => {
-      if (error) {
-        this.smtpAuthFailed = error.code === 'EAUTH';
-
-        if (this.smtpAuthFailed) {
-          this.log.error(
-            '[homebridge-icloud-smtp] SMTP authentication failed. Use an Apple app-specific password.'
-          );
-        } else {
-          this.log.error(
-            `[homebridge-icloud-smtp] SMTP verify failed: ${error.message}`
-          );
-        }
-      } else {
-        this.log.info(
-          '[homebridge-icloud-smtp] SMTP server connection established'
-        );
       }
     });
 
@@ -96,10 +74,15 @@ class ICloudSMTPPlatform {
   }
 
   init() {
+    this.dlog('init() called');
+
     const validUUIDs = new Set();
 
     for (const sw of this.config.switches || []) {
-      const uuid = this.api.hap.uuid.generate(`${sw.name}-${sw.to || this.config.username}`);
+      const uuid = this.api.hap.uuid.generate(
+        `${sw.name}-${sw.to || this.config.username}`
+      );
+
       validUUIDs.add(uuid);
 
       let accessory = this.accessories.find(a => a.UUID === uuid);
@@ -114,6 +97,7 @@ class ICloudSMTPPlatform {
         );
 
         this.log.info(`Adding new accessory: ${sw.name}`);
+        this.dlog(`Created UUID: ${uuid}`);
       } else {
         this.log.info(`Restoring existing accessory: ${sw.name}`);
       }
@@ -132,6 +116,7 @@ class ICloudSMTPPlatform {
       );
     }
 
+    // Remove stale accessories
     for (const accessory of this.accessories) {
       if (!validUUIDs.has(accessory.UUID)) {
         this.log.info(`Removing stale accessory: ${accessory.displayName}`);
