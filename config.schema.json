@@ -11,16 +11,16 @@
     ],
     "properties": {
       "username": {
-        "title": "Enter your iCloud email address to send the emails from.",
-		"type": "string",
-		"required": true,
+        "title": "iCloud email address (sender)",
+        "type": "string",
+        "required": true,
         "format": "email",
-		"description": "Use the same email address that is used to login on iCloud.com when you generate the app-specific password."
+        "description": "Use the same email address used to log in to iCloud.com when generating the app-specific password."
       },
       "password": {
-        "title": "app-specific password",
-		"type": "string",
-		"description": "Generate an app-specific password on account.apple.com."
+        "title": "App-specific password",
+        "type": "string",
+        "description": "Generate an app-specific password on https://account.apple.com."
       },
       "switches": {
         "type": "array",
@@ -29,26 +29,32 @@
           "type": "object",
           "required": [
             "name",
-            "to",
             "subject"
           ],
           "properties": {
             "name": {
-              "type": "string"
+              "type": "string",
+              "title": "Switch name"
             },
             "to": {
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "title": "Recipient email (optional)",
+              "description": "Email address that will receive the message. If no value is provided, the email will be sent to the same address used in the username field."
             },
             "subject": {
-              "type": "string"
+              "type": "string",
+              "title": "Email subject"
             },
             "body": {
-              "type": "string"
+              "type": "string",
+              "title": "Email body"
             },
             "cooldown": {
               "type": "number",
-              "default": 30
+              "default": 30,
+              "title": "Cooldown (seconds)",
+              "description": "Minimum time between trigger events for this switch."
             }
           }
         }
