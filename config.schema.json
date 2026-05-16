@@ -14,7 +14,6 @@
         "title": "iCloud email address (sender)",
         "type": "string",
         "required": true,
-        "format": "email",
         "description": "Use the same email address used to log in to iCloud.com when generating the app-specific password."
       },
       "password": {
@@ -38,9 +37,9 @@
             },
             "to": {
               "type": "string",
-              "format": "email",
               "title": "Recipient email (optional)",
-              "description": "Email address that will receive the message. If no value is provided, the email will be sent to the same address used in the username field."
+              "description": "Email address that will receive the message. If empty, the email will be sent to the sender address (username). Multiple recipients are allowed (comma-separated emails supported, e.g. a@a.com, b@b.com).",
+              "pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
             },
             "subject": {
               "type": "string",
