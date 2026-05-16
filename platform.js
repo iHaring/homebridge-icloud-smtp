@@ -11,10 +11,8 @@ class ICloudSMTPPlatform {
     this.api = api;
     this.accessories = [];
 
-    // DEBUG FLAG (from config)
     this.debug = this.config.debug === true;
 
-    // Debug logger helper
     this.dlog = (msg, ...args) => {
       if (this.debug) {
         this.log.info(`[DEBUG] ${msg}`, ...args);
@@ -40,10 +38,9 @@ class ICloudSMTPPlatform {
       throw err;
     }
 
-    // -------------------------------
-    // SHARED SMTP TRANSPORTER (NEW)
-    // -------------------------------
-    this.smtpReady = false;
+    // ----------------------------
+    // SHARED SMTP TRANSPORT
+    // ----------------------------
     this.smtpAuthFailed = false;
 
     this.transporter = nodemailer.createTransport({
@@ -56,17 +53,13 @@ class ICloudSMTPPlatform {
       }
     });
 
-    // Single verify for ALL switches
     this.transporter.verify((error) => {
       if (error) {
-        this.smtpReady = false;
+        this.smtpAuthFailed = error.code === 'EAUTH';
 
-        if (error.code === 'EAUTH') {
-          this.smtpAuthFailed = true;
-
+        if (this.smtpAuthFailed) {
           this.log.error(
-            '[homebridge-icloud-smtp] SMTP authentication failed. ' +
-            'Check Apple app-specific password.'
+            '[homebridge-icloud-smtp] SMTP authentication failed. Use an Apple app-specific password.'
           );
         } else {
           this.log.error(
@@ -74,8 +67,6 @@ class ICloudSMTPPlatform {
           );
         }
       } else {
-        this.smtpReady = true;
-
         this.log.info(
           '[homebridge-icloud-smtp] SMTP server connection established'
         );
@@ -98,22 +89,17 @@ class ICloudSMTPPlatform {
     if (!Array.isArray(this.config.switches) || this.config.switches.length === 0) {
       throw new Error('No switches defined');
     }
-
-    this.dlog(`Config valid. Switch count: ${this.config.switches.length}`);
   }
 
   configureAccessory(accessory) {
-    this.dlog(`Restoring accessory from cache: ${accessory.displayName}`);
     this.accessories.push(accessory);
   }
 
   init() {
-    this.dlog('init() called');
-
     const validUUIDs = new Set();
 
     for (const sw of this.config.switches || []) {
-      const uuid = this.api.hap.uuid.generate(`${sw.name}-${sw.to}`);
+      const uuid = this.api.hap.uuid.generate(`${sw.name}-${sw.to || this.config.username}`);
       validUUIDs.add(uuid);
 
       let accessory = this.accessories.find(a => a.UUID === uuid);
@@ -128,10 +114,8 @@ class ICloudSMTPPlatform {
         );
 
         this.log.info(`Adding new accessory: ${sw.name}`);
-        this.dlog(`Created new accessory UUID: ${uuid}`);
       } else {
         this.log.info(`Restoring existing accessory: ${sw.name}`);
-        this.dlog(`Matched cached UUID: ${uuid}`);
       }
 
       accessory.context.config = sw;
@@ -143,16 +127,14 @@ class ICloudSMTPPlatform {
         sw,
         this.config,
         this.queue,
-        this.transporter,        // NEW
-        () => this.smtpAuthFailed // NEW guard accessor
+        this.transporter,
+        () => this.smtpAuthFailed
       );
     }
 
-    // Remove stale accessories
     for (const accessory of this.accessories) {
       if (!validUUIDs.has(accessory.UUID)) {
         this.log.info(`Removing stale accessory: ${accessory.displayName}`);
-        this.dlog(`Unregistering UUID: ${accessory.UUID}`);
 
         this.api.unregisterPlatformAccessories(
           PLUGIN_NAME,
