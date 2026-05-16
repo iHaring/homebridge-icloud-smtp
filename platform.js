@@ -1,3 +1,4 @@
+const nodemailer = require('nodemailer');
 const { MailSwitchAccessory } = require('./switchAccessory');
 
 const PLATFORM_NAME = 'ICloudSMTP';
@@ -38,6 +39,48 @@ class ICloudSMTPPlatform {
       this.log.error(err.message);
       throw err;
     }
+
+    // -------------------------------
+    // SHARED SMTP TRANSPORTER (NEW)
+    // -------------------------------
+    this.smtpReady = false;
+    this.smtpAuthFailed = false;
+
+    this.transporter = nodemailer.createTransport({
+      host: 'smtp.mail.me.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: this.config.username,
+        pass: this.config.password
+      }
+    });
+
+    // Single verify for ALL switches
+    this.transporter.verify((error) => {
+      if (error) {
+        this.smtpReady = false;
+
+        if (error.code === 'EAUTH') {
+          this.smtpAuthFailed = true;
+
+          this.log.error(
+            '[homebridge-icloud-smtp] SMTP authentication failed. ' +
+            'Check Apple app-specific password.'
+          );
+        } else {
+          this.log.error(
+            `[homebridge-icloud-smtp] SMTP verify failed: ${error.message}`
+          );
+        }
+      } else {
+        this.smtpReady = true;
+
+        this.log.info(
+          '[homebridge-icloud-smtp] SMTP server connection established'
+        );
+      }
+    });
 
     this.log.info('ICloudSMTP initialized');
     this.dlog('Platform constructor complete');
@@ -99,7 +142,9 @@ class ICloudSMTPPlatform {
         accessory,
         sw,
         this.config,
-        this.queue
+        this.queue,
+        this.transporter,        // NEW
+        () => this.smtpAuthFailed // NEW guard accessor
       );
     }
 
