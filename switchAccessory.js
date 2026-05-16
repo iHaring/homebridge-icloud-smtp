@@ -1,14 +1,26 @@
-const nodemailer = require('nodemailer');
 const { version } = require('./package.json');
 
 class MailSwitchAccessory {
-  constructor(log, api, accessory, swConfig, platformConfig, queue) {
+  constructor(
+    log,
+    api,
+    accessory,
+    swConfig,
+    platformConfig,
+    queue,
+    transporter,
+    authFailedCheck
+  ) {
     this.log = log;
     this.api = api;
     this.accessory = accessory;
     this.swConfig = swConfig;
     this.platformConfig = platformConfig;
     this.queue = queue;
+
+    this.transporter = transporter;
+    this.isAuthFailed = authFailedCheck;
+
     this.lastSent = 0;
 
     this.service =
@@ -20,21 +32,11 @@ class MailSwitchAccessory {
       .setCharacteristic(api.hap.Characteristic.Model, swConfig.name)
       .setCharacteristic(api.hap.Characteristic.SerialNumber, accessory.UUID)
       .setCharacteristic(api.hap.Characteristic.FirmwareRevision, version);
-    
+
     this.service
       .getCharacteristic(api.hap.Characteristic.On)
       .onSet(this.setState.bind(this))
       .onGet(() => false);
-
-    this.transporter = nodemailer.createTransport({
-      host: 'smtp.mail.me.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: platformConfig.username,
-        pass: platformConfig.password
-      }
-    });
   }
 
   logPrefix() {
@@ -47,8 +49,6 @@ class MailSwitchAccessory {
     const now = Date.now();
     const cooldownMs = (this.swConfig.cooldown || 30) * 1000;
 
-    this.log.info(this.logPrefix() + ' triggered');
-
     if (now - this.lastSent < cooldownMs) {
       this.log.warn(this.logPrefix() + ' cooldown active');
       return this.reset();
@@ -56,39 +56,72 @@ class MailSwitchAccessory {
 
     this.lastSent = now;
 
-    await this.queue.add(() => this.sendWithRetry());
+    try {
+      await this.queue.add(() => this.sendMail());
+    } catch (e) {
+      this.log.error(this.logPrefix() + ` queue error: ${e.message}`);
+    }
 
     this.reset();
   }
 
-  async sendWithRetry() {
-    const retries = this.swConfig.retries || 2;
+  async sendMail() {
 
-    for (let i = 1; i <= retries + 1; i++) {
-      try {
-        this.log.info(this.logPrefix() + ' sending attempt ' + i);
+    // AUTH GUARD (global platform state)
+    if (this.isAuthFailed && this.isAuthFailed()) {
+      this.log.error(
+        this.logPrefix() +
+        ' SMTP disabled due to authentication failure'
+      );
+      return;
+    }
 
-        await this.transporter.sendMail({
-          from: this.platformConfig.username,
-          to: this.swConfig.to,
-          subject: this.swConfig.subject,
-          text: this.swConfig.body
-        });
+    try {
 
-        this.log.info(this.logPrefix() + ' email sent');
-        return;
-      } catch (e) {
-        this.log.warn(this.logPrefix() + ' attempt ' + i + ' failed');
-        if (i > retries) {
-          this.log.error(this.logPrefix() + ' all retries failed');
-        }
+      const info = await this.transporter.sendMail({
+        from: this.platformConfig.username,
+        to: this.swConfig.to,
+        subject: this.swConfig.subject,
+        text: this.swConfig.body
+      });
+
+      // ✅ SINGLE CLEAN LOG LINE
+      this.log.info(
+        `${this.logPrefix()} email sent → ${this.swConfig.to}`
+      );
+
+      if (this.platformConfig.debug) {
+        this.log.info(
+          this.logPrefix() +
+          ` SMTP response: ${info.response}`
+        );
+      }
+
+    } catch (e) {
+
+      const msg = e?.message || String(e);
+      const code = e?.code || 'UNKNOWN';
+
+      this.log.error(
+        this.logPrefix() +
+        ` SMTP error [${code}]: ${msg}`
+      );
+
+      if (code === 'EAUTH') {
+        this.log.error(
+          this.logPrefix() +
+          ' Authentication failed (use Apple app-specific password)'
+        );
       }
     }
   }
 
   reset() {
     setTimeout(() => {
-      this.service.updateCharacteristic(this.api.hap.Characteristic.On, false);
+      this.service.updateCharacteristic(
+        this.api.hap.Characteristic.On,
+        false
+      );
     }, 500);
   }
 }
