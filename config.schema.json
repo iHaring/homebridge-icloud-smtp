@@ -7,17 +7,10 @@
   "schema": {
     "type": "object",
     "required": [
-      "name",
       "username",
       "password"
     ],
     "properties": {
-      "name": {
-        "title": "Name",
-        "type": "string",
-        "default": "iCloud SMTP",
-        "description": "Name of the platform instance shown in Homebridge."
-      },
       "username": {
         "title": "iCloud email address (sender)",
         "type": "string",
