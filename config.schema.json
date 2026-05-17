@@ -11,6 +11,13 @@
       "password"
     ],
     "properties": {
+"name": {
+        "title": "Platform Name",
+        "type": "string",
+        "required": true,
+        "default": "iCloud SMTP Switches",
+        "readonly": true
+      },
       "username": {
         "title": "iCloud email address (sender)",
         "type": "string",
