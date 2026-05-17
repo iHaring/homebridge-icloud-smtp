@@ -35,12 +35,13 @@ class ICloudSMTPPlatform {
     this.accessories = [];
 
     this.debug = this.config.debug === true;
+    this.validConfig = true;
 
     try {
       this.validateConfig();
     } catch (err) {
-      this.log.error(err.message);
-      throw err;
+      this.log.error(`[ICloudSMTP] Configuration error: ${err.message}`);
+      this.validConfig = false;
     }
 
     const transporter = nodemailer.createTransport({
@@ -67,8 +68,8 @@ class ICloudSMTPPlatform {
       throw new Error('Missing iCloud credentials');
     }
 
-    if (!Array.isArray(this.config.switches) || this.config.switches.length === 0) {
-      throw new Error('No switches defined');
+    if (!Array.isArray(this.config.switches)) {
+      throw new Error('Switches must be an array');
     }
   }
 
@@ -77,6 +78,11 @@ class ICloudSMTPPlatform {
   }
 
   init() {
+    if (!this.validConfig) {
+      this.log.error('[ICloudSMTP] Plugin disabled due to invalid configuration');
+      return;
+    }
+
     const validUUIDs = new Set();
 
     for (const sw of this.config.switches || []) {
