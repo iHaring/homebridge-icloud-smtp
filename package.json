@@ -3,7 +3,7 @@
   "displayName": "iCloud SMTP Switches",
   "type": "commonjs",
   "version": "0.6.2",
-  "description": "Virtual Switches to be able to send emails from Homebrige.",
+  "description": "Virtual Switches to be able to send emails from Homebridge.",
   "author": "liamharing",
   "license": "MIT",
   "homepage": "https://github.com/iHaring/homebridge-icloud-smtp#readme",
@@ -46,6 +46,6 @@
   },
   "funding": {
 	  "type" : "github",
-	  "url" : "https://github.com/sponsors/joff0"
+	  "url" : "https://github.com/sponsors/liamharing"
 	}
 }
