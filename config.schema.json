@@ -2,15 +2,22 @@
   "pluginAlias": "ICloudSMTP",
   "pluginType": "platform",
   "singular": false,
+  "displayName": "iCloud SMTP",
   "headerDisplay": "Send emails via iCloud SMTP when switches are triggered",
   "schema": {
-    "name": "homebridge-icloud-smtp",
     "type": "object",
     "required": [
+      "name",
       "username",
       "password"
     ],
     "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "default": "iCloud SMTP",
+        "description": "Name of the platform instance shown in Homebridge."
+      },
       "username": {
         "title": "iCloud email address (sender)",
         "type": "string",
@@ -20,6 +27,11 @@
         "title": "App-specific password",
         "type": "string",
         "description": "Generate an app-specific password on https://account.apple.com."
+      },
+      "debug": {
+        "type": "boolean",
+        "default": false,
+        "title": "Debug logging"
       },
       "switches": {
         "type": "array",
@@ -38,7 +50,7 @@
             "to": {
               "type": "string",
               "title": "Recipient email (optional)",
-              "description": "Email address that will receive the message. If empty, the email will be sent to the sender address (username). Multiple recipients are allowed (comma-separated emails supported, e.g. a@a.com, b@b.com).",
+              "description": "If empty, email is sent to the sender address (username). Multiple recipients supported via comma-separated emails.",
               "pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
             },
             "subject": {
@@ -52,8 +64,7 @@
             "cooldown": {
               "type": "number",
               "default": 30,
-              "title": "Cooldown (seconds)",
-              "description": "Minimum time between trigger events for this switch."
+              "title": "Cooldown (seconds)"
             }
           }
         }
