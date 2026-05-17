@@ -1,7 +1,11 @@
 # homebridge-icloud-smtp
 
-<a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![npm](https://img.shields.io/npm/v/homebridge-icloud-smtp)</a>
-![downloads](https://img.shields.io/npm/dm/homebridge-icloud-smtp)
+<a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![npm](https://img.shields.io/npm/v/homebridge-icloud-smtp?style=flat-square)</a>
+<a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![npm](https://img.shields.io/github/v/release/iHaring/homebridge-icloud-smtp?style=flat-square)</a>
+<a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![downloads](https://img.shields.io/npm/dm/homebridge-icloud-smtp?style=flat-square)</a>
+<a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![downloads total](https://img.shields.io/npm/dt/homebridge-icloud-smtp?style=flat-square)</a>
+![node](https://img.shields.io/node/v/homebridge-icloud-smtp)
+
 <!--
 ![homebridge](https://img.shields.io/badge/homebridge-verified-green)
 -->
