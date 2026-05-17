@@ -11,22 +11,23 @@
       "password"
     ],
     "properties": {
-"name": {
-        "title": "Platform Name",
+      "name": {
+        "title": "Name",
         "type": "string",
-        "required": true,
-        "default": "iCloud SMTP Switches",
-        "readonly": true
+        "default": "iCloud SMTP",
+        "description": "Name of this platform instance in Homebridge.",
+		"readonly": true
       },
       "username": {
         "title": "iCloud email address (sender)",
         "type": "string",
-        "description": "Use the same email address used to log in to iCloud.com when generating the app-specific password."
+        "format": "email",
+        "description": "iCloud email used for SMTP authentication and as fallback recipient if 'to' is not set."
       },
       "password": {
         "title": "App-specific password",
         "type": "string",
-        "description": "Generate an app-specific password on https://account.apple.com."
+        "description": "Generate an app-specific password at https://account.apple.com."
       },
       "switches": {
         "type": "array",
@@ -39,27 +40,28 @@
           ],
           "properties": {
             "name": {
-              "type": "string",
-              "title": "Switch name"
+              "title": "Switch name",
+              "type": "string"
             },
             "to": {
+              "title": "Recipient email(s)",
               "type": "string",
-              "title": "Recipient email (optional)",
-              "description": "If empty, email is sent to the sender address (username). Multiple recipients supported via comma-separated emails.",
+              "description": "Optional. If empty, uses sender email. Multiple recipients supported (comma-separated).",
               "pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
             },
             "subject": {
-              "type": "string",
-              "title": "Email subject"
+              "title": "Email subject",
+              "type": "string"
             },
             "body": {
-              "type": "string",
-              "title": "Email body"
+              "title": "Email body",
+              "type": "string"
             },
             "cooldown": {
+              "title": "Cooldown (seconds)",
               "type": "number",
               "default": 30,
-              "title": "Cooldown (seconds)"
+              "minimum": 0
             }
           }
         }
