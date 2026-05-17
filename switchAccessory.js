@@ -1,25 +1,13 @@
 const { version } = require('./package.json');
 
 class MailSwitchAccessory {
-  constructor(
-    log,
-    api,
-    accessory,
-    swConfig,
-    platformConfig,
-    queue,
-    transporter,
-    authFailedCheck
-  ) {
+  constructor(log, api, accessory, swConfig, platformConfig, emailService) {
     this.log = log;
     this.api = api;
     this.accessory = accessory;
     this.swConfig = swConfig;
     this.platformConfig = platformConfig;
-    this.queue = queue;
-
-    this.transporter = transporter;
-    this.isAuthFailed = authFailedCheck;
+    this.emailService = emailService;
 
     this.lastSent = 0;
 
@@ -57,64 +45,28 @@ class MailSwitchAccessory {
     this.lastSent = now;
 
     try {
-      await this.queue.add(() => this.sendMail());
+      await this.sendMail();
     } catch (e) {
-      this.log.error(this.logPrefix() + ` queue error: ${e.message}`);
+      this.log.error(this.logPrefix() + ` send error: ${e.message}`);
     }
 
     this.reset();
   }
 
   async sendMail() {
+    const recipient = this.swConfig.to || this.platformConfig.username;
 
-    if (this.isAuthFailed && this.isAuthFailed()) {
-      this.log.error(
-        this.logPrefix() +
-        ' SMTP disabled due to authentication failure'
-      );
-      return;
-    }
+    const info = await this.emailService.send({
+      to: recipient,
+      subject: this.swConfig.subject,
+      text: this.swConfig.body,
+      debugPrefix: this.logPrefix()
+    });
 
-    try {
+    this.log.info(`${this.logPrefix()} email sent → ${recipient}`);
 
-      // ✅ Fallback TO = username if missing
-      const recipient = this.swConfig.to || this.platformConfig.username;
-
-      const info = await this.transporter.sendMail({
-        from: this.platformConfig.username,
-        to: recipient,
-        subject: this.swConfig.subject,
-        text: this.swConfig.body
-      });
-
-      // ✅ Clean single log line
-      this.log.info(
-        `${this.logPrefix()} email sent → ${recipient}`
-      );
-
-      if (this.platformConfig.debug) {
-        this.log.info(
-          this.logPrefix() +
-          ` SMTP response: ${info.response}`
-        );
-      }
-
-    } catch (e) {
-
-      const msg = e?.message || String(e);
-      const code = e?.code || 'UNKNOWN';
-
-      this.log.error(
-        this.logPrefix() +
-        ` SMTP error [${code}]: ${msg}`
-      );
-
-      if (code === 'EAUTH') {
-        this.log.error(
-          this.logPrefix() +
-          ' Authentication failed (use Apple app-specific password)'
-        );
-      }
+    if (info?.response && this.platformConfig.debug) {
+      this.log.info(this.logPrefix() + ` SMTP response: ${info.response}`);
     }
   }
 
