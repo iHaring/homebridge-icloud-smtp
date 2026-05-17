@@ -4,6 +4,29 @@ const { MailSwitchAccessory } = require('./switchAccessory');
 const PLATFORM_NAME = 'ICloudSMTP';
 const PLUGIN_NAME = 'homebridge-icloud-smtp';
 
+class EmailService {
+  constructor(log, transporter, username) {
+    this.log = log;
+    this.transporter = transporter;
+    this.username = username;
+    this.authFailed = false;
+  }
+
+  async send({ to, subject, text, debugPrefix = '' }) {
+    if (this.authFailed) {
+      this.log.error(`${debugPrefix} SMTP disabled due to authentication failure`);
+      return;
+    }
+
+    return await this.transporter.sendMail({
+      from: this.username,
+      to,
+      subject,
+      text
+    });
+  }
+}
+
 class ICloudSMTPPlatform {
   constructor(log, config, api) {
     this.log = log;
@@ -13,24 +36,6 @@ class ICloudSMTPPlatform {
 
     this.debug = this.config.debug === true;
 
-    this.dlog = (msg, ...args) => {
-      if (this.debug) {
-        this.log.info(`[DEBUG] ${msg}`, ...args);
-      }
-    };
-
-    this.queue = {
-      promise: Promise.resolve(),
-      add: function (task) {
-        this.promise = this.promise
-          .then(() => task())
-          .catch(err => {
-            console.error('Queue error:', err);
-          });
-        return this.promise;
-      }
-    };
-
     try {
       this.validateConfig();
     } catch (err) {
@@ -38,12 +43,7 @@ class ICloudSMTPPlatform {
       throw err;
     }
 
-    // ----------------------------
-    // SHARED ICLOUD SMTP TRANSPORT
-    // ----------------------------
-    this.smtpAuthFailed = false;
-
-    this.transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       service: 'icloud',
       auth: {
         user: this.config.username,
@@ -51,15 +51,18 @@ class ICloudSMTPPlatform {
       }
     });
 
+    this.emailService = new EmailService(
+      this.log,
+      transporter,
+      this.config.username
+    );
+
     this.log.info('ICloudSMTP initialized');
-    this.dlog('Platform constructor complete');
 
     api.on('didFinishLaunching', () => this.init());
   }
 
   validateConfig() {
-    this.dlog('Validating config...');
-
     if (!this.config.username || !this.config.password) {
       throw new Error('Missing iCloud credentials');
     }
@@ -74,8 +77,6 @@ class ICloudSMTPPlatform {
   }
 
   init() {
-    this.dlog('init() called');
-
     const validUUIDs = new Set();
 
     for (const sw of this.config.switches || []) {
@@ -97,7 +98,6 @@ class ICloudSMTPPlatform {
         );
 
         this.log.info(`Adding new accessory: ${sw.name}`);
-        this.dlog(`Created UUID: ${uuid}`);
       } else {
         this.log.info(`Restoring existing accessory: ${sw.name}`);
       }
@@ -110,13 +110,10 @@ class ICloudSMTPPlatform {
         accessory,
         sw,
         this.config,
-        this.queue,
-        this.transporter,
-        () => this.smtpAuthFailed
+        this.emailService
       );
     }
 
-    // Remove stale accessories
     for (const accessory of this.accessories) {
       if (!validUUIDs.has(accessory.UUID)) {
         this.log.info(`Removing stale accessory: ${accessory.displayName}`);
@@ -128,8 +125,6 @@ class ICloudSMTPPlatform {
         );
       }
     }
-
-    this.dlog('init() complete');
   }
 }
 
