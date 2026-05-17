@@ -47,11 +47,10 @@ Example configuration:
   "name": "iCloud SMTP",
   "username": "you@icloud.com",
   "password": "your-app-specific-password",
-  "debug": false,
   "switches": [
     {
       "name": "Door Alert",
-      "to": "notify@example.com, second@example.com",
+      "to": "notify@example.com,second@example.com",
       "subject": "Door Opened",
       "body": "The front door was opened.",
       "cooldown": 30
@@ -75,7 +74,6 @@ Example configuration:
 | `name` | string | No | Display name in Homebridge |
 | `username` | string | Yes | iCloud email address used as sender |
 | `password` | string | Yes | Apple app-specific password |
-| `debug` | boolean | No | Enable debug logging |
 | `switches` | array | Yes | List of virtual email switches |
 
 ### Switch Options
@@ -96,7 +94,7 @@ Example configuration:
 Example:
 
 ```json
-"to": "person1@example.com, person2@example.com"
+"to": "person1@example.com,person2@example.com"
 ```
 
 ## Apple App-Specific Password
