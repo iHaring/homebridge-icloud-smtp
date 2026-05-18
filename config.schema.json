@@ -22,12 +22,16 @@
         "title": "iCloud email address (sender)",
         "type": "string",
         "format": "email",
-        "description": "iCloud email used for SMTP authentication and as fallback recipient if 'to' is not set."
+		"placeholder": "your-email@icloud.com",
+        "description": "iCloud email used for SMTP authentication and as default recipient if 'to' is not assigned on a switch."
       },
       "password": {
         "title": "App-specific password",
         "type": "string",
-        "description": "Generate an app-specific password at https://account.apple.com."
+        "description": "Generate an app-specific password at https://account.apple.com.",
+		"x-schema-form": {
+			"type": "password"
+		}		
       },
       "switches": {
         "type": "array",
