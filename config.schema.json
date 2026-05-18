@@ -15,23 +15,22 @@
         "title": "Name",
         "type": "string",
         "default": "iCloud SMTP",
-        "description": "Name of this platform instance in Homebridge.",
-		"readonly": true
+        "readonly": true
       },
       "username": {
         "title": "iCloud email address (sender)",
         "type": "string",
         "format": "email",
-		"placeholder": "your-email@icloud.com",
-        "description": "iCloud email used for SMTP authentication and as default recipient if 'to' is not assigned on a switch."
+        "placeholder": "your.email@icloud.com",
+        "description": "iCloud email address used for SMTP authentication and as the default recipient if no recipient is configured on a switch."
       },
       "password": {
         "title": "App-specific password",
         "type": "string",
-        "description": "Generate an app-specific password at https://account.apple.com.",
-		"x-schema-form": {
-			"type": "password"
-		}		
+        "description": "Generate an App-Specific Password on https://account.apple.com",
+        "x-schema-form": {
+          "type": "password"
+        }
       },
       "switches": {
         "type": "array",
@@ -46,29 +45,29 @@
             "name": {
               "title": "Switch name",
               "type": "string",
-			  "maxLength": 32
+              "maxLength": 32
             },
             "subject": {
               "title": "Email subject",
               "type": "string",
-			  "maxLength": 64
+              "maxLength": 64
             },
             "body": {
               "title": "Email body",
-			  "description": "Optional.",
+              "description": "Optional.",
               "type": "string",
-			  "maxLength": 256
+              "maxLength": 256
             },
-			"to": {
-			              "title": "Recipient email(s)",
-			              "type": "string",
-			              "description": "Optional. If empty, uses default iCloud email. Multiple recipients supported (comma-separated).",
-			              "pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
-			            },
+            "to": {
+              "title": "Recipient email(s)",
+              "type": "string",
+              "description": "If not set, the default iCloud email address will be used. Multiple recipients supported (comma-separated).",
+              "pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
+            },
             "cooldown": {
               "title": "Cooldown (seconds)",
               "type": "number",
-			  "description": "Minimum time in seconds before this switch can send another email. Prevents accidental repeated triggers or automation loops.",
+              "description": "Minimum time in seconds before this switch can send another email. Prevents accidental repeated triggers or automation loops.",
               "default": 30,
               "minimum": 0
             }
