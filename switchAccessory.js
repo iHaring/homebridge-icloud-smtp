@@ -14,10 +14,9 @@ class MailSwitchAccessory {
     this.service =
       accessory.getService(api.hap.Service.Switch) ||
       accessory.addService(api.hap.Service.Switch, swConfig.name);
-
-    accessory.getService(api.hap.Service.AccessoryInformation)
-      .setCharacteristic(api.hap.Characteristic.Manufacturer, 'homebridge-icloud-smtp')
-      .setCharacteristic(api.hap.Characteristic.Model, swConfig.name)
+      accessory.getService(api.hap.Service.AccessoryInformation)
+      .setCharacteristic(api.hap.Characteristic.Manufacturer, 'Homebridge')
+      .setCharacteristic(api.hap.Characteristic.Model, 'homebridge-icloud-smtp')
       .setCharacteristic(api.hap.Characteristic.SerialNumber, accessory.UUID)
       .setCharacteristic(api.hap.Characteristic.FirmwareRevision, version);
 
