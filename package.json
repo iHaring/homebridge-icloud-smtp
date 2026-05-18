@@ -2,7 +2,7 @@
   "name": "homebridge-icloud-smtp",
   "displayName": "iCloud SMTP Switches",
   "type": "commonjs",
-  "version": "0.6.2",
+  "version": "0.6.5",
   "description": "Virtual Switches to be able to send emails from Homebridge.",
   "author": "liamharing",
   "license": "MIT",
