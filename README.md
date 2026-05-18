@@ -9,6 +9,8 @@
 -->
 Homebridge dynamic platform plugin that creates virtual HomeKit switches which send emails through iCloud SMTP when triggered.
 
+[![NPM](https://nodei.co/npm/homebridge-icloud-smtp.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/homebridge-icloud-smtp)
+
 ## Features
 
 - Create one or more HomeKit switches in Homebridge
