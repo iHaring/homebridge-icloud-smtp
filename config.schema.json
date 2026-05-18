@@ -1,7 +1,7 @@
 {
   "pluginAlias": "ICloudSMTP",
   "pluginType": "platform",
-  "singular": false,
+  "singular": true,
   "displayName": "iCloud SMTP",
   "headerDisplay": "Send emails via iCloud SMTP when switches are triggered",
   "schema": {
@@ -45,23 +45,26 @@
           "properties": {
             "name": {
               "title": "Switch name",
-              "type": "string"
+              "type": "string",
+			  "maxLength": 32
             },
             "subject": {
               "title": "Email subject",
-              "type": "string"
+              "type": "string",
+			  "maxLength": 64
             },
             "body": {
               "title": "Email body",
 			  "description": "Optional.",
-              "type": "string"
+              "type": "string",
+			  "maxLength": 256
             },
 			"to": {
-				"title": "Recipient email(s)",
-				"type": "string",
-				"description": "Optional. If empty, uses default iCloud email. Multiple recipients supported (comma-separated).",
-				"pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
-			},
+			              "title": "Recipient email(s)",
+			              "type": "string",
+			              "description": "Optional. If empty, uses default iCloud email. Multiple recipients supported (comma-separated).",
+			              "pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
+			            },
             "cooldown": {
               "title": "Cooldown (seconds)",
               "type": "number",
