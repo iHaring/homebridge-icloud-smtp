@@ -47,23 +47,25 @@
               "title": "Switch name",
               "type": "string"
             },
-            "to": {
-              "title": "Recipient email(s)",
-              "type": "string",
-              "description": "Optional. If empty, uses sender email. Multiple recipients supported (comma-separated).",
-              "pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
-            },
             "subject": {
               "title": "Email subject",
               "type": "string"
             },
             "body": {
               "title": "Email body",
+			  "description": "Optional.",
               "type": "string"
             },
+			"to": {
+				"title": "Recipient email(s)",
+				"type": "string",
+				"description": "Optional. If empty, uses default iCloud email. Multiple recipients supported (comma-separated).",
+				"pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
+			},
             "cooldown": {
               "title": "Cooldown (seconds)",
               "type": "number",
+			  "description": "Minimum time in seconds before this switch can send another email. Prevents accidental repeated triggers or automation loops.",
               "default": 30,
               "minimum": 0
             }
