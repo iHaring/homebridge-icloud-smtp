@@ -1,25 +1,28 @@
 # homebridge-icloud-smtp
 
 <a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![npm](https://img.shields.io/npm/v/homebridge-icloud-smtp?style=flat-square)</a>
-<a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![npm](https://img.shields.io/github/v/release/iHaring/homebridge-icloud-smtp?style=flat-square)</a>
-<a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![downloads](https://img.shields.io/npm/dm/homebridge-icloud-smtp?style=flat-square)</a>
-<a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![downloads total](https://img.shields.io/npm/dt/homebridge-icloud-smtp?style=flat-square)</a>
-<!--
-![homebridge](https://img.shields.io/badge/homebridge-verified-green)
--->
-Homebridge dynamic platform plugin that creates virtual HomeKit switches which send emails through iCloud SMTP when triggered.
+<a href="https://github.com/iHaring/homebridge-icloud-smtp">![npm](https://img.shields.io/github/v/release/iHaring/homebridge-icloud-smtp?style=flat-square)</a>
+![downloads](https://img.shields.io/npm/dm/homebridge-icloud-smtp?style=flat-square)
+
+Homebridge dynamic platform plugin that creates virtual HomeKit switches that send emails through iCloud SMTP when triggered.
 
 [![NPM](https://nodei.co/npm/homebridge-icloud-smtp.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/homebridge-icloud-smtp)
 
 ## Features
 
-- Create one or more HomeKit switches in Homebridge
-- Send emails through your iCloud account
+- Create one or more virtual HomeKit switches in Homebridge
+- Send emails using your iCloud account
 - Optional recipient override per switch
 - Multiple recipients supported (comma-separated)
-- Automatic fallback to sender address if no recipient is configured
-- Per-switch cooldown protection
+- Automatically falls back to the sender address if no recipient is configured
+- Per-switch cooldown protection to prevent accidental repeated sends
 - Clean and lightweight architecture
+
+## Example Use Cases
+
+- Send yourself a notification when a HomeKit automation runs
+- Trigger email alerts from sensors or switches
+- Create simple notification workflows inside Apple Home
 
 ## Requirements
 
@@ -51,7 +54,7 @@ Example configuration:
 {
   "platform": "ICloudSMTP",
   "name": "iCloud SMTP",
-  "username": "you@icloud.com",
+  "username": "your.email@icloud.com",
   "password": "your-app-specific-password",
   "switches": [
     {
@@ -62,9 +65,9 @@ Example configuration:
       "cooldown": 30
     },
     {
-      "name": "Self Notification",
-      "subject": "Test Email",
-      "body": "This email is sent to the sender address automatically."
+      "name": "Window left open",
+      "subject": "A window is left open",
+      "cooldown": 600
     }
   ]
 }
@@ -80,7 +83,7 @@ Example configuration:
 | `name` | string | No | Display name in Homebridge |
 | `username` | string | Yes | iCloud email address used as sender |
 | `password` | string | Yes | Apple app-specific password |
-| `switches` | array | Yes | List of virtual email switches |
+| `switches` | array | Yes | List of virtual HomeKit switches |
 
 ### Switch Options
 
@@ -89,7 +92,7 @@ Example configuration:
 | `name` | string | Yes | Switch name shown in HomeKit |
 | `to` | string | No | Recipient email address(es). Multiple recipients supported via comma-separated values |
 | `subject` | string | Yes | Email subject |
-| `body` | string | No | Plain-text email body |
+| `body` | string | No | Plain text email body |
 | `cooldown` | number | No | Minimum seconds between sends (default: `30`) |
 
 ## Recipient Behavior
@@ -150,8 +153,7 @@ https://support.apple.com/en-us/102654
 ## Security Notes
 
 - Treat your app-specific password as sensitive
-- Do not commit credentials to Git repositories
-- Prefer Homebridge UI secret fields when available
+- Use of a secondary iCloud account is preferred
 
 ## Support
 
