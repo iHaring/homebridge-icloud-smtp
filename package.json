@@ -2,7 +2,7 @@
   "name": "homebridge-icloud-smtp",
   "displayName": "iCloud SMTP Switches",
   "type": "commonjs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Virtual Switches to be able to send emails from Homebridge.",
   "author": "liamharing",
   "license": "MIT",
@@ -41,7 +41,13 @@
     "node": "^22.10.0 || ^24.0.0",
     "homebridge": "^1.8.0 || ^2.0.0"
   },
-  "dependencies": {
+"scripts": {
+    "build": "rimraf ./dist && tsc",
+    "lint": "eslint . --max-warnings=0",
+    "prepublishOnly": "npm run lint && npm run build",
+    "watch": "npm run build && npm link && nodemon"
+  },
+	"dependencies": {
     "nodemailer": "^8.0.7"
   },
   "funding": {
