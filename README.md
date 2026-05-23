@@ -9,13 +9,12 @@ Homebridge dynamic platform plugin that creates virtual HomeKit switches that se
 
 ## Features
 
-- Create one or more virtual HomeKit switches in Homebridge
-- Send emails using your iCloud account
-- Optional recipient override per switch
-- Multiple recipients supported (comma-separated)
-- Automatically falls back to the sender address if no recipient is configured
-- Per-switch cooldown protection to prevent accidental repeated sends
-- Clean and lightweight architecture
+- Send emails using iCloud SMTP
+- Trigger emails using HomeKit switches
+- Supports per-switch recipients
+- Uses Apple app-specific passwords
+- Lightweight with minimal dependencies
+- Compatible with Homebridge v2
 
 ## Example Use Cases
 
@@ -89,9 +88,9 @@ Example configuration:
 | Option | Type | Required | Description |
 |---|---|---|---|
 | `name` | string | Yes | Switch name shown in HomeKit |
-| `to` | string | No | Recipient email address(es). Multiple recipients supported via comma-separated values |
 | `subject` | string | Yes | Email subject |
 | `body` | string | No | Plain text email body |
+| `to` | string | No | Recipient email address(es). Multiple recipients supported via comma-separated values |
 | `cooldown` | number | No | Minimum seconds between sends (default: `30`) |
 
 ## Recipient Behavior
@@ -102,7 +101,7 @@ Example configuration:
 Example:
 
 ```json
-"to": "person1@example.com,person2@example.com"
+"to": "notify@example.com,second@example.com"
 ```
 
 ## Apple App-Specific Password
@@ -149,10 +148,12 @@ https://support.apple.com/en-us/102654
 - Verify `username` and `password` are configured
 - Ensure at least one switch exists in `switches`
 
-## Security Notes
+## Security Recommendations
 
-- Treat your app-specific password as sensitive
-- Use of a secondary iCloud account is preferred
+- Use an Apple app-specific password
+- Consider using a dedicated secondary iCloud account
+- Never share your Homebridge config.json publicly
+- Revoke the app-specific password if no longer needed
 
 ## Support
 
@@ -164,6 +165,9 @@ When opening issues, include:
 - Node.js version
 - Plugin version
 - Relevant log output
+
+## Credit
+This plugin was inspired by the [potrudeau/homebridge-messenger](https://github.com/potrudeau/homebridge-messenger) plugin created by Potrudeau.
 
 ## License
 
