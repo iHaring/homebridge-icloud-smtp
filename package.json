@@ -25,6 +25,8 @@
     "switch",
     "virtual switch",
     "delay",
+    "email",
+    "mail",
     "timer",
     "dummy"
   ],
@@ -45,7 +47,7 @@
     "nodemailer": "^8.0.7"
   },
   "funding": {
-	  "type" : "github",
-	  "url" : "https://github.com/sponsors/iHaring"
-	}
+    "type": "github",
+    "url": "https://github.com/sponsors/iHaring"
+  }
 }
