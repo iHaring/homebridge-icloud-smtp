@@ -1,4 +1,3 @@
-
 const PLATFORM_NAME = 'ICloudSMTP';
 const PLUGIN_NAME = 'homebridge-icloud-smtp';
 
