@@ -45,12 +45,16 @@
             "name": {
               "title": "Switch name",
               "type": "string",
-              "maxLength": 32
+              "maxLength": 32,
+              "description": "Please use only alphanumeric, space, and apostrophe characters.",
+              "pattern": "^[a-zA-Z0-9]([a-zA-Z0-9']| (?! ))*[a-zA-Z0-9]$|^[a-zA-Z0-9]$",
+              "minLength": 2
             },
             "subject": {
               "title": "Email subject",
               "type": "string",
-              "maxLength": 64
+              "maxLength": 64,
+              "minLength": 1
             },
             "body": {
               "title": "Email body",
