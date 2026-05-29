@@ -12,7 +12,7 @@ Homebridge dynamic platform plugin that creates virtual HomeKit switches that se
 - Send emails using iCloud SMTP
 - Trigger emails using HomeKit switches
 - Supports per-switch recipients
-- Uses Apple app-specific passwords
+- Uses Apple app-specific password
 - Lightweight with minimal dependencies
 - Compatible with Homebridge v2
 
@@ -50,26 +50,26 @@ Example configuration:
 
 ```json
 {
-  "platform": "ICloudSMTP",
-  "name": "iCloud SMTP",
-  "username": "your.email@icloud.com",
-  "password": "your-app-specific-password",
-  "switches": [
-    {
-      "id": "door-alert",
-	  "name": "Door Alert",
-      "to": "notify@example.com,second@example.com",
-      "subject": "Door Opened",
-      "body": "The front door was opened.",
-      "cooldown": 30
-    },
-    {
-      "id": "window-left-open",
-	  "name": "Window left open",
-      "subject": "A window is left open",
-      "cooldown": 600
-    }
-  ]
+	"platform": "ICloudSMTP",
+	"name": "iCloud SMTP",
+	"username": "your.email@icloud.com",
+	"password": "your-app-specific-password",
+	"switches": [
+		{
+			"id": "door-alert",
+			"name": "Door Alert",
+			"to": "notify@example.com,second@example.com",
+			"subject": "Door Opened",
+			"body": "The front door was opened.",
+			"cooldown": 30
+		},
+		{
+			"id": "window-left-open",
+			"name": "Window left open",
+			"subject": "A window is left open",
+			"cooldown": 600
+		}
+	]
 }
 ```
 
@@ -89,7 +89,7 @@ Example configuration:
 
 | Option | Type | Required | Description |
 |---|---|---|---|
-| `id` | string | Yes | Unique, stable accessory identifier. Renaming a switch without an explicit id will create a new accessory in HomeKit (losing room assignments and automations) |
+| `id` | string | Yes | Unique, stable accessory identifier. Renaming the explicit id will create a new accessory in HomeKit (losing room assignments and automations) |
 | `name` | string | Yes | Switch name shown in HomeKit |
 | `subject` | string | Yes | Email subject |
 | `body` | string | No | Plain text email body |
