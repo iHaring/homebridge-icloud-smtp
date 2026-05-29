@@ -71,6 +71,35 @@ class ICloudSMTPPlatform {
     if (!Array.isArray(this.config.switches)) {
       throw new Error('Switches must be an array');
     }
+
+    for (const sw of this.config.switches) {
+      if (!sw.id) {
+        sw.id = this.generateFallbackId(sw);
+        this.log.warn(
+          `[ICloudSMTP] Switch "${sw.name}" has no "id" field. ` +
+          `Auto-generated: "${sw.id}". Please add an explicit "id" to your config ` +
+          `to avoid accessory resets if you rename this switch.`
+        );
+      }
+    }
+
+    const ids = this.config.switches.map(sw => sw.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size) {
+      throw new Error('Duplicate switch IDs detected. Each switch must have a unique id.');
+    }
+  }
+
+  generateFallbackId(sw) {
+    const raw = `${sw.name}-${sw.to || this.config.username}`;
+    const id = raw
+      .replace(/[^A-Za-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .substring(0, 64);
+
+    // Ensure minimum 5 characters, pad if necessary
+    return id.length >= 5 ? id : id.padEnd(5, '0');
   }
 
   configureAccessory(accessory) {
@@ -87,7 +116,7 @@ class ICloudSMTPPlatform {
 
     for (const sw of this.config.switches || []) {
       const uuid = this.api.hap.uuid.generate(
-        `${sw.name}-${sw.to || this.config.username}`
+        `${PLUGIN_NAME}:${sw.id}`
       );
 
       validUUIDs.add(uuid);
@@ -103,9 +132,14 @@ class ICloudSMTPPlatform {
           [accessory]
         );
 
-        this.log.info(`Adding new accessory: ${sw.name}`);
+        this.log.info(`Adding new accessory: ${sw.name} (id: ${sw.id})`);
       } else {
-        this.log.info(`Restoring existing accessory: ${sw.name}`);
+        if (accessory.displayName !== sw.name) {
+          this.log.info(`Renaming accessory: ${accessory.displayName} → ${sw.name}`);
+          accessory.displayName = sw.name;
+        }
+
+        this.log.info(`Restoring existing accessory: ${sw.name} (id: ${sw.id})`);
       }
 
       accessory.context.config = sw;
