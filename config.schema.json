@@ -1,83 +1,92 @@
 {
-  "pluginAlias": "ICloudSMTP",
-  "pluginType": "platform",
-  "singular": true,
-  "displayName": "iCloud SMTP",
-  "headerDisplay": "Send emails via iCloud SMTP when switches are triggered",
-  "schema": {
-    "type": "object",
-    "required": [
-      "username",
-      "password"
-    ],
-    "properties": {
-      "name": {
-        "title": "Name",
-        "type": "string",
-        "default": "iCloud SMTP",
-        "readonly": true
-      },
-      "username": {
-        "title": "iCloud email address (sender)",
-        "type": "string",
-        "format": "email",
-        "placeholder": "your.email@icloud.com",
-        "description": "iCloud email address used for SMTP authentication and as the default recipient if no recipient is configured on a switch."
-      },
-      "password": {
-        "title": "App-specific password",
-        "type": "string",
-        "description": "Generate an App-Specific Password on https://account.apple.com",
-        "x-schema-form": {
-          "type": "password"
-        }
-      },
-      "switches": {
-        "type": "array",
-        "minItems": 1,
-        "items": {
-          "type": "object",
-          "required": [
-            "name",
-            "subject"
-          ],
-          "properties": {
-            "name": {
-              "title": "Switch name",
-              "type": "string",
-              "maxLength": 32,
-              "description": "Please use only alphanumeric, space, and apostrophe characters.",
-              "pattern": "^[a-zA-Z0-9]([a-zA-Z0-9']| (?! ))*[a-zA-Z0-9]$|^[a-zA-Z0-9]$",
-              "minLength": 2
-            },
-            "subject": {
-              "title": "Email subject",
-              "type": "string",
-              "maxLength": 64,
-              "minLength": 1
-            },
-            "body": {
-              "title": "Email body",
-              "description": "Optional.",
-              "type": "string",
-              "maxLength": 256
-            },
-            "to": {
-              "title": "Recipient email(s)",
-              "type": "string",
-              "description": "If not set, the default iCloud email address will be used. Multiple recipients supported (comma-separated).",
-              "pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
-            },
-            "cooldown": {
-              "title": "Cooldown (seconds)",
-              "type": "number",
-              "description": "Minimum time in seconds before this switch can send another email. Prevents accidental repeated triggers or automation loops.",
-              "default": 30,
-              "minimum": 0
-            }
-          }
-        }
-      }
-    }
-  }
+	"pluginAlias": "ICloudSMTP",
+	"pluginType": "platform",
+	"singular": true,
+	"displayName": "iCloud SMTP",
+	"headerDisplay": "Send emails via iCloud SMTP when switches are triggered",
+	"schema": {
+		"type": "object",
+		"required": [
+			"username",
+			"password"
+		],
+		"properties": {
+			"name": {
+				"title": "Name",
+				"type": "string",
+				"default": "iCloud SMTP",
+				"readonly": true
+			},
+			"username": {
+				"title": "iCloud email address (sender)",
+				"type": "string",
+				"format": "email",
+				"placeholder": "your.email@icloud.com",
+				"description": "iCloud email address used for SMTP authentication and as the default recipient if no recipient is configured on a switch."
+			},
+			"password": {
+				"title": "App-specific password",
+				"type": "string",
+				"description": "Generate an App-Specific Password on https://account.apple.com",
+				"x-schema-form": {
+					"type": "password"
+				}
+			},
+			"switches": {
+				"type": "array",
+				"minItems": 1,
+				"items": {
+					"type": "object",
+					"required": [
+						"id",
+						"name",
+						"subject"
+					],
+					"properties": {
+						"id": {
+							"title": "Accessory ID",
+							"type": "string",
+							"pattern": "^[A-Za-z0-9\\-]{5,}$",
+							"minLength": 5,
+							"maxLength": 64,
+							"description": "A unique, stable identifier for this switch (e.g. 'front-door-alert'). Only letters, numbers, and hyphens allowed (min 5 characters). Do not modify once assigned!"
+						},
+						"name": {
+							"title": "Switch name",
+							"type": "string",
+							"maxLength": 32,
+							"description": "Please use only alphanumeric, space, and apostrophe characters.",
+							"pattern": "^[a-zA-Z0-9][a-zA-Z0-9\\u2019 '.,-]*[a-zA-Z0-9\\u2019]$",
+							"minLength": 2
+						},
+						"subject": {
+							"title": "Email subject",
+							"type": "string",
+							"maxLength": 64,
+							"minLength": 1
+						},
+						"body": {
+							"title": "Email body",
+							"description": "Optional.",
+							"type": "string",
+							"maxLength": 256
+						},
+						"to": {
+							"title": "Recipient email(s)",
+							"type": "string",
+							"description": "If not set, the default iCloud email address will be used. Multiple recipients supported (comma-separated).",
+							"pattern": "^\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+(\\s*,\\s*[^,\\s@]+@[^,\\s@]+\\.[^,\\s@]+)*\\s*$"
+						},
+						"cooldown": {
+							"title": "Cooldown (seconds)",
+							"type": "number",
+							"description": "Minimum time in seconds before this switch can send another email. Prevents accidental repeated triggers or automation loops.",
+							"default": 30,
+							"minimum": 0
+						}
+					}
+				}
+			}
+		}
+	}
 }
