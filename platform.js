@@ -1,4 +1,3 @@
-const pluginPackage = require('./package.json');
 const nodemailerVersion = require('nodemailer/package.json').version;
 const nodemailer = require('nodemailer');
 const { MailSwitchAccessory } = require('./switchAccessory');
@@ -185,7 +184,6 @@ class ICloudSMTPPlatform {
     this.accessories = [];
     this.validConfig = true;
 
-    this.log.info(`${pluginPackage.name} v${pluginPackage.version} starting...`);
     this.log.info(`Dependency: nodemailer v${nodemailerVersion}`);
 
     try {
@@ -210,8 +208,6 @@ class ICloudSMTPPlatform {
         this.config.username
       );
     }
-
-    this.log.info('Platform initialized');
 
     api.on('didFinishLaunching', async () => {
       if (!this.validConfig) {
