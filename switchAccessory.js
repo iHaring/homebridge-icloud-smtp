@@ -65,8 +65,8 @@ class MailSwitchAccessory {
 
     this.log.info(`${this.logPrefix()} email sent → ${recipient}`);
 
-    if (info?.response && this.platformConfig.debug) {
-      this.log.info(this.logPrefix() + ` SMTP response: ${info.response}`);
+    if (info?.response) {
+      this.log.debug(`${this.logPrefix()} SMTP response: ${info.response}`);
     }
   }
 
