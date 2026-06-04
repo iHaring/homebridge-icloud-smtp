@@ -183,7 +183,6 @@ class ICloudSMTPPlatform {
     this.config = config || {};
     this.api = api;
     this.accessories = [];
-    this.debug = this.config.debug === true;
     this.validConfig = true;
 
     this.log.info(`${pluginPackage.name} v${pluginPackage.version} starting...`);
