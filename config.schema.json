@@ -3,7 +3,7 @@
 	"pluginType": "platform",
 	"singular": true,
 	"displayName": "iCloud SMTP",
-	"headerDisplay": "Send emails via iCloud SMTP when switches are triggered",
+	"headerDisplay": "Send email via iCloud SMTP when a switch is triggered",
 	"schema": {
 		"type": "object",
 		"required": [
