@@ -154,8 +154,8 @@ https://support.apple.com/en-us/102654
 ## Security Recommendations
 
 - Use an Apple app-specific password
-- Consider using a dedicated secondary iCloud account
 - Never share your Homebridge config.json publicly
+- Consider using a dedicated secondary iCloud account
 - Revoke the app-specific password if no longer needed
 
 ## Support
