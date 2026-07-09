@@ -173,5 +173,4 @@ When opening issues, include:
 This plugin was inspired by the [potrudeau/homebridge-messenger](https://github.com/potrudeau/homebridge-messenger) plugin created by Potrudeau.
 
 ## License
-
 MIT
