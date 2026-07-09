@@ -135,9 +135,9 @@ https://support.apple.com/en-us/102654
 
 ### Authentication failed
 
-- Ensure you are using an Apple app-specific password
 - Do not use your Apple account password
 - Regenerate the app-specific password if needed
+- Ensure you are using an Apple app-specific password
 
 ### No email received
 
