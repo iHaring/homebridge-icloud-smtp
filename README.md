@@ -2,6 +2,7 @@
 
 <a href="https://www.npmjs.com/package/homebridge-icloud-smtp">![npm](https://img.shields.io/npm/v/homebridge-icloud-smtp?style=flat-square)</a>
 <a href="https://github.com/iHaring/homebridge-icloud-smtp">![npm](https://img.shields.io/github/v/release/iHaring/homebridge-icloud-smtp?style=flat-square)</a>
+![verified-by-homebridge](https://img.shields.io/badge/_-verified-blueviolet?color=%23491F59&style=flat&logoColor=%23FFFFFF&logo=homebridge)
 
 Homebridge dynamic platform plugin that creates virtual HomeKit switches that send emails through iCloud SMTP when triggered.
 

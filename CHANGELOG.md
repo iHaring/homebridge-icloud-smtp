@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.10](https://github.com/iHaring/homebridge-icloud-smtp/compare/1.1.9...v1.1.10) (2026-07-09)
+
+
+### Bug Fixes
+
+* formatting issue in security recommendations ([21d337a](https://github.com/iHaring/homebridge-icloud-smtp/commit/21d337a96357d433fef90147c3fdead97fa1804f))
+
 ## [1.1.8](https://github.com/iHaring/homebridge-icloud-smtp/compare/v1.1.7...v1.1.8) (2026-06-19)
 
 
