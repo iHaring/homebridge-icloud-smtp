@@ -44,7 +44,7 @@
     "homebridge": "^1.8.0 || ^2.0.0"
   },
   "dependencies": {
-    "nodemailer": "^9.0.4"
+    "nodemailer": "^9.0.5"
   },
   "funding": {
     "type": "github",
