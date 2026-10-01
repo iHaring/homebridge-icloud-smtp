@@ -14,7 +14,7 @@ Homebridge dynamic platform plugin that creates virtual HomeKit switches that se
 - Trigger emails using HomeKit switches
 - Supports per-switch recipients
 - Uses Apple app-specific password
-- Lightweight with minimal dependencies
+- Lightweight with one dependency (latest version of Nodemailer)
 - Compatible with Homebridge v2
 
 ## Example Use Cases
