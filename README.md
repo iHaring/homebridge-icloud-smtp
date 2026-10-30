@@ -26,7 +26,7 @@ Homebridge dynamic platform plugin that creates virtual HomeKit switches that se
 ## Requirements
 
 - Homebridge `^1.8.0 || ^2.0.0`
-- Node.js `^22.10.0 || ^24.0.0` || ^26.0.0`
+- Node.js `^22.12.0 || ^24.0.0 || ^26.0.0`
 - iCloud account
 - Apple app-specific password
 
