@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/iHaring/homebridge-icloud-smtp/compare/v1.3.4...v1.3.5) (2026-11-06)
+
+
+### Bug Fixes
+
+* **deps:** bump nodemailer from 10.2.1 to 10.3.1 ([#43](https://github.com/iHaring/homebridge-icloud-smtp/issues/43)) ([f21d805](https://github.com/iHaring/homebridge-icloud-smtp/commit/f21d805ee41cc367d356000c75a414d678b6ac4c))
+
 ## [1.3.4](https://github.com/iHaring/homebridge-icloud-smtp/compare/v1.3.3...v1.3.4) (2026-10-30)
 
 
